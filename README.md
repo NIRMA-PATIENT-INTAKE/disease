@@ -5,9 +5,10 @@
 
 ## Разработка
 
-Нужно установить зависимости
+Нужно установить зависимости и подключить pre-commit.g
 
     pip install -r requirements.py
+    pre-commit install
 
 ### Контрибьютинг
 

@@ -1,12 +1,11 @@
-from disease.interpretation.explainer import SymptomBasedExplainer
 from disease.feature_extraction import SymptomExtractor
+from disease.interpretation.explainer import SymptomBasedExplainer
 from disease.models import DiseaseClassifier
-
 
 texts = [
     "У меня болит живот, но нет температуры",
     "У меня температура и болит ухо",
-    "Я завтра иду домой"
+    "Я завтра иду домой",
 ]
 diseases = ["гастрит", "отит", "-1"]
 
@@ -21,7 +20,6 @@ symptom_vectorizer.fit(texts)
 #   [0, 0, 0]
 # ]
 features = symptom_vectorizer.transform(texts)
-
 
 classifier = DiseaseClassifier()
 classifier.fit(features, diseases)
