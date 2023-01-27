@@ -1,0 +1,2 @@
+spacy~=3.5.0
+negspacy~=1.0.3
