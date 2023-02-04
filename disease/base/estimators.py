@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 
 class BaseEstimator(ABC):
@@ -25,5 +26,5 @@ class BaseTransformer(ABC):
         pass
 
     @abstractmethod
-    def transform(self, x):
+    def transform(self, message: str) -> List[int]:
         pass

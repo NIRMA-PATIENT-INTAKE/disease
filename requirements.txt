@@ -1,0 +1,4 @@
+negspacy~=1.0.3
+pre-commit~=3.0.2
+pytest~=7.2.1
+spacy~=3.5.0
