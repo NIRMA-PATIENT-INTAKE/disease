@@ -1,4 +1,4 @@
-from typing import Dict, Iterable, List
+from typing import Iterable
 
 import spacy
 from negspacy.negation import Negex
@@ -6,8 +6,11 @@ from spacy import Language
 from spacy.tokens import Doc
 
 from disease.base.estimators import BaseTransformer
-
-NEGEX_ENTITY_LABEL: str = "SYMPTOM"
+from disease.feature_extraction.anamnesis import Anamnesis
+from disease.feature_extraction.symptom_collection import (
+    SYMPTOM_ENTITY_LABEL_VALUE,
+    get_symptoms_patterns,
+)
 
 
 class SymptomExtractor(BaseTransformer):
@@ -16,7 +19,7 @@ class SymptomExtractor(BaseTransformer):
     SPACY_LANG_MODEL_NAME: str = "ru_core_news_md"
     NEGEX_EXTENSION_NAME: str = "negex"
 
-    # Следующие списки слов - автоматически переведенные списки слов из negspacy/termsets.py
+    # Following list of words is auto-translated list of words from negspacy/termsets.py
     pseudo_negations = [
         "не дальше",
         "не в состоянии быть",
@@ -91,29 +94,18 @@ class SymptomExtractor(BaseTransformer):
         "termination": termination,
     }
 
-    # TODO: Построить нормальную модель рассматриваемых симптомов
-    symptoms = ["температура", "недомогание", "болеть голова"]
-    patterns = [
-        {"label": NEGEX_ENTITY_LABEL, "pattern": [{"LEMMA": "температура"}]},
-        {"label": NEGEX_ENTITY_LABEL, "pattern": [{"LEMMA": "недомогание"}]},
-        {
-            "label": NEGEX_ENTITY_LABEL,
-            "pattern": [{"LEMMA": "болеть"}, {"LEMMA": "голова"}],
-        },
-    ]
-
     def __init__(self):
         self._spacy_lang_model: Language = spacy.load(
             SymptomExtractor.SPACY_LANG_MODEL_NAME
         )
         ruler = self._spacy_lang_model.add_pipe("entity_ruler")
 
-        ruler.add_patterns(SymptomExtractor.patterns)
+        ruler.add_patterns(get_symptoms_patterns())
         self._negex_model: Negex = Negex(
             nlp=self._spacy_lang_model,
             name="negotiation",
             neg_termset=SymptomExtractor.russian_termset,
-            ent_types=[NEGEX_ENTITY_LABEL],
+            ent_types=[SYMPTOM_ENTITY_LABEL_VALUE],
             extension_name=SymptomExtractor.NEGEX_EXTENSION_NAME,
             chunk_prefix=[],
         )
@@ -121,26 +113,18 @@ class SymptomExtractor(BaseTransformer):
     def fit(self, x: Iterable[str]):
         pass
 
-    def transform(self, message: str) -> List[int]:
+    def transform(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
-        # TODO: Может быть можно переписать это так, чтобы учитывались не ents,
-        #  а симптомы - https://spacy.io/api/entityruler
         negex_doc: Doc = self._negex_model(model_doc)
 
-        # TODO: Что будет если для одного сиптома сначала ставим -1, а потом 1.
-        #  -> Нужно ставить 0 (типо не уверены), а для этого нужен отдельный датакласс
-        message_disease: Dict[str, int] = dict.fromkeys(SymptomExtractor.symptoms, 0)
+        anamnesis: Anamnesis = Anamnesis()
+        symptom_entities = [
+            entity
+            for entity in negex_doc.ents
+            if entity.label_ == SYMPTOM_ENTITY_LABEL_VALUE
+        ]
 
-        # Проверяем есть ли в entities симптомы и проставляем соответствующие метки
-        entities: Dict[str, bool] = {
-            entity.lemma_: entity._.negex for entity in negex_doc.ents
-        }
-        if entities:
-            for symptom in SymptomExtractor.symptoms:
-                if symptom in entities:
-                    if entities[symptom]:
-                        message_disease[symptom] = -1
-                    else:
-                        message_disease[symptom] = 1
+        for entity in symptom_entities:
+            anamnesis.update_symptom_status_by_entity(entity)
 
-        return list(message_disease.values())
+        return anamnesis
