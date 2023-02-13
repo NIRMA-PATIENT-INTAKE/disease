@@ -9,6 +9,7 @@
 
     pip install -r requirements.py
     pre-commit install
+    bash init.py
 
 ### Контрибьютинг
 
