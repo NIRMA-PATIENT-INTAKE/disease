@@ -1,6 +1,6 @@
 # Классификатор заболеваний
 
-**Patient-intake** - модуль для работы с заболеваниями на естественном языке, обеспечивающий дистанционное взаимодействие пациента и медицинского учреждения с помощью диалоговых агентов. Реализован на языке Python.
+**Patient-intake** - модуль, обеспечивающий дистанционное взаимодействие пациента и медицинского учреждения с помощью диалоговых агентов. Реализован на языке Python.
 
 Модуль позволяет предсказывать возможное заболевание пациента на основе введенной им информации, присваивать диагнозу степень срочности приема, а также выводить интерпретацию результатов работы модели. Для обучения модели создан датасет, содержащий информацию о болезнях и их симптомах.  
 
@@ -41,7 +41,7 @@
 
 ## Участники проекта
 
-[<img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/53980712?v=4&h=200&w=200&fit=cover&mask=circle&maxage=7d" width="30" /> Анна Чижик](https://github.com/Frantsuzova) </br> project-менеджер
+[<img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/53980712?v=4&h=200&w=200&fit=cover&mask=circle&maxage=7d" width="30" /> Анна Чижик](https://github.com/Frantsuzova) </br> руководитель проекта
 
 [<img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/23355371?v=4&h=200&w=200&fit=cover&mask=circle&maxage=7d" width="30" /> Мичил Егоров](https://github.com/EgorovM) </br> тимлид
 
