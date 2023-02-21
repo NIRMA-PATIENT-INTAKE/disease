@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 
 import spacy
 from negspacy.negation import Negex
@@ -9,7 +9,7 @@ from disease.base.estimators import BaseTransformer
 from disease.feature_extraction.anamnesis import Anamnesis
 from disease.feature_extraction.symptom_collection import (
     SYMPTOM_ENTITY_LABEL_VALUE,
-    get_symptoms_patterns,
+    SYMPTOMS_SPACY_MODEL_PATTERNS,
 )
 
 
@@ -94,13 +94,13 @@ class SymptomExtractor(BaseTransformer):
         "termination": termination,
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._spacy_lang_model: Language = spacy.load(
             SymptomExtractor.SPACY_LANG_MODEL_NAME
         )
         ruler = self._spacy_lang_model.add_pipe("entity_ruler")
 
-        ruler.add_patterns(get_symptoms_patterns())
+        ruler.add_patterns(SYMPTOMS_SPACY_MODEL_PATTERNS)
         self._negex_model: Negex = Negex(
             nlp=self._spacy_lang_model,
             name="negotiation",
@@ -128,3 +128,6 @@ class SymptomExtractor(BaseTransformer):
             anamnesis.update_symptom_status_by_entity(entity)
 
         return anamnesis
+
+    def transform(self, messages: List[str]) -> List[Anamnesis]:
+        return [self.transform(message) for message in messages]

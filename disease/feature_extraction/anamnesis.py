@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, List
 
 from spacy.tokens import Span
@@ -16,7 +18,7 @@ class Anamnesis:
     Represents symptoms and it's statuses extracted from user messages.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._symptoms_marks: Dict[Symptom, SymptomStatus] = _create_symptoms_marks()
 
     def update_symptom_status_by_entity(self, entity: Span):
@@ -33,7 +35,7 @@ class Anamnesis:
             elif old_value == SymptomStatus.NO_INFO and entity._.negex == True:
                 self._symptoms_marks[symptom] = SymptomStatus.NO
 
-    def update_symptoms_statuses_by_new_anamnesis(self, new_anamnesis: Span):
+    def update_symptoms_statuses_by_new_anamnesis(self, new_anamnesis: Anamnesis):
         if not isinstance(new_anamnesis, Anamnesis):
             raise ValueError(
                 "Other anamnesis should be Anamnesis, but it is "
@@ -47,8 +49,7 @@ class Anamnesis:
             ):
                 self._symptoms_marks[key] = SymptomStatus.CONFUSED
             elif (
-                old_value == SymptomStatus.NO_INFO
-                or old_value == SymptomStatus.CONFUSED
+                old_value in [SymptomStatus.NO_INFO, SymptomStatus.CONFUSED]
             ) and new_value != SymptomStatus.NO_INFO:
                 self._symptoms_marks[key] = new_value
         return self

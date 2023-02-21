@@ -17,10 +17,7 @@ class Symptom:
     patterns: Tuple
 
     def __eq__(self, other):
-        if isinstance(other, Symptom):
-            return self.id_name == other.id_name
-
-        return False
+        return isinstance(other, Symptom) and self.id_name == other.id_name
 
     def __hash__(self):
         return hash(self.id_name)

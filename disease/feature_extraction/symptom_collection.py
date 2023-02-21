@@ -25,7 +25,7 @@ SYMPTOMS: List[Symptom] = [
 NAME_TO_SYMPTOM: Dict[str, Symptom] = {symptom.id_name: symptom for symptom in SYMPTOMS}
 
 
-def get_symptoms_patterns() -> List[Dict]:
+def _create_spacy_model_patterns() -> List[Dict]:
     result_patterns = []
     for symptom in SYMPTOMS:
         pattern_record = {
@@ -35,3 +35,6 @@ def get_symptoms_patterns() -> List[Dict]:
         result_patterns.append(pattern_record)
 
     return result_patterns
+
+
+SYMPTOMS_SPACY_MODEL_PATTERNS = _create_spacy_model_patterns()
