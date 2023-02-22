@@ -27,7 +27,7 @@ class BaseTransformer(ABC):
         pass
 
     @abstractmethod
-    def transform(self, message: str) -> List[int]:
+    def transform(self, message: str) -> Anamnesis:
         pass
 
     @abstractmethod

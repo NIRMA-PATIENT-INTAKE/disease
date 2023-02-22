@@ -58,6 +58,9 @@ class Anamnesis:
         symptom = NAME_TO_SYMPTOM.get(symptom_name)
         return self._symptoms_marks.get(symptom)
 
+    def get_symptoms_status(self) -> List[SymptomStatus]:
+        return list(self._symptoms_marks.values())
+
     def __len__(self):
         return len(self._symptoms_marks)
 
