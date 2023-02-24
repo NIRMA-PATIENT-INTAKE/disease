@@ -1,5 +1,6 @@
 from typing import Iterable, List
 
+import numpy as np
 import spacy
 from negspacy.negation import Negex
 from spacy import Language
@@ -113,7 +114,7 @@ class SymptomExtractor(BaseTransformer):
     def fit(self, x: Iterable[str]):
         pass
 
-    def transform_single(self, message: str) -> Anamnesis:
+    def _transform(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
         negex_doc: Doc = self._negex_model(model_doc)
 
@@ -130,4 +131,4 @@ class SymptomExtractor(BaseTransformer):
         return anamnesis
 
     def transform(self, messages: List[str]) -> List[Anamnesis]:
-        return [self.transform_single(message) for message in messages]
+        return [self._transform(message) for message in messages]

@@ -1,12 +1,21 @@
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
 from disease.base.estimators import BaseEstimator
 
 
 class DiseaseClassifier(BaseEstimator):
-    """ Disease Classifier
-    """
+    """Disease Classifier"""
 
-    def fit(self, X, y):
-        pass
+    def __init__(self):
+        self.log_reg = LogisticRegression()
 
-    def predict_proba(self, X):
-        pass
+    def fit(self, features: np.array, y: np.array) -> "DiseaseClassifier":
+        self.log_reg.fit(features, y)
+        return self
+
+    def predict_proba(self, features: np.array) -> np.array:
+        return self.log_reg.predict_proba(features)
+
+    def predict(self, x):
+        return self.log_reg.predict(x)
