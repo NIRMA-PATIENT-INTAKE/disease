@@ -129,5 +129,5 @@ class SymptomExtractor(BaseTransformer):
 
         return anamnesis
 
-    def transform(self, messages: List[str]) -> List[Anamnesis]:
+    def transform_many(self, messages: List[str]) -> List[Anamnesis]:
         return [self.transform(message) for message in messages]

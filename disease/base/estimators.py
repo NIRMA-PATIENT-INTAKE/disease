@@ -31,5 +31,5 @@ class BaseTransformer(ABC):
         pass
 
     @abstractmethod
-    def transform(self, messages: List[str]) -> List[Anamnesis]:
+    def transform_many(self, messages: List[str]) -> List[Anamnesis]:
         pass
