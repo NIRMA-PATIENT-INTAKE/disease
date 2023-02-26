@@ -26,13 +26,13 @@ class Anamnesis:
         symptom = NAME_TO_SYMPTOM.get(entity_lemma)
         if symptom:
             old_value = self._symptoms_marks[symptom]
-            if (old_value == SymptomStatus.YES and entity._.negex == False) or (
-                old_value == SymptomStatus.NO and entity._.negex == True
+            if (old_value == SymptomStatus.YES and not entity._.negex) or (
+                old_value == SymptomStatus.NO and entity._.negex
             ):
                 self._symptoms_marks[symptom] = SymptomStatus.CONFUSED
-            elif old_value == SymptomStatus.NO_INFO and entity._.negex == False:
+            elif old_value == SymptomStatus.NO_INFO and not entity._.negex:
                 self._symptoms_marks[symptom] = SymptomStatus.YES
-            elif old_value == SymptomStatus.NO_INFO and entity._.negex == True:
+            elif old_value == SymptomStatus.NO_INFO and entity._.negex:
                 self._symptoms_marks[symptom] = SymptomStatus.NO
 
     def update_symptoms_statuses_by_new_anamnesis(self, new_anamnesis: Anamnesis):

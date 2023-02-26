@@ -113,7 +113,7 @@ class SymptomExtractor(BaseTransformer):
     def fit(self, x: Iterable[str]):
         pass
 
-    def transform(self, message: str) -> Anamnesis:
+    def transform_single(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
         negex_doc: Doc = self._negex_model(model_doc)
 
@@ -129,5 +129,5 @@ class SymptomExtractor(BaseTransformer):
 
         return anamnesis
 
-    def transform_many(self, messages: List[str]) -> List[Anamnesis]:
-        return [self.transform(message) for message in messages]
+    def transform(self, messages: List[str]) -> List[Anamnesis]:
+        return [self.transform_single(message) for message in messages]
