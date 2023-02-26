@@ -19,7 +19,7 @@ symptom_vectorizer.fit(texts)
 #   [0, 1, 1],
 #   [0, 0, 0]
 # ]
-features = symptom_vectorizer.transform(texts)
+features = symptom_vectorizer.transform_single(texts)
 
 classifier = DiseaseClassifier()
 classifier.fit(features, diseases)

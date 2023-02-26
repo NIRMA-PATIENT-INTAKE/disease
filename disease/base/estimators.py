@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from disease.feature_extraction.anamnesis import Anamnesis
+
 
 class BaseEstimator(ABC):
-    """ BaseEstimator
-    """
+    """BaseEstimator"""
+
     @abstractmethod
     def fit(self, x, y):
         pass
@@ -18,13 +20,16 @@ class BaseEstimator(ABC):
 
 
 class BaseTransformer(ABC):
-    """ Base transformer
-    """
+    """Base transformer"""
 
     @abstractmethod
     def fit(self, x):
         pass
 
     @abstractmethod
-    def transform(self, message: str) -> List[int]:
+    def transform_single(self, message: str) -> Anamnesis:
+        pass
+
+    @abstractmethod
+    def transform(self, messages: List[str]) -> List[Anamnesis]:
         pass
