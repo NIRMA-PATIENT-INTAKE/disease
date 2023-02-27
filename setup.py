@@ -5,7 +5,7 @@ setup(
     packages=["distool"],
     version="0.1",
     license="MIT",
-    description="disease processing tool kit",
+    description="Disease processing tool kit",
     author="NIRMA Team of ITMO University",
     author_email="egorovmichil9@gmail.com",
     url="https://github.com/nirma-patient-intake/disease/",
