@@ -1,5 +1,5 @@
-from disease.feature_extraction import SymptomExtractor
-from disease.feature_extraction.symptom_status import SymptomStatus
+from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction.symptom_status import SymptomStatus
 
 
 def test_transform_on_simple_message_1():

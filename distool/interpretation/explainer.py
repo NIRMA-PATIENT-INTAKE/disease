@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from disease.feature_extraction import SymptomExtractor
-from disease.feature_extraction.symptom_collection import SYMPTOMS
-from disease.feature_extraction.symptom_status import SymptomStatus
-from disease.models.classifiers import DiseaseClassifier
+from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction.symptom_collection import SYMPTOMS
+from distool.feature_extraction.symptom_status import SymptomStatus
+from distool.models.classifiers import DiseaseClassifier
 
 
 class BaseExplainer(ABC):

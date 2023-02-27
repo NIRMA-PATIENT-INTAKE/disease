@@ -4,9 +4,9 @@ from typing import Dict, List
 
 from spacy.tokens import Span
 
-from disease.feature_extraction.symptom import Symptom
-from disease.feature_extraction.symptom_collection import NAME_TO_SYMPTOM, SYMPTOMS
-from disease.feature_extraction.symptom_status import SymptomStatus
+from distool.feature_extraction.symptom import Symptom
+from distool.feature_extraction.symptom_collection import NAME_TO_SYMPTOM, SYMPTOMS
+from distool.feature_extraction.symptom_status import SymptomStatus
 
 
 def _create_symptoms_marks() -> Dict[Symptom, SymptomStatus]:

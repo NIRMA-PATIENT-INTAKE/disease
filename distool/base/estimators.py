@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 
-from disease.feature_extraction.anamnesis import Anamnesis
+from distool.feature_extraction.anamnesis import Anamnesis
 
 
 class BaseEstimator(ABC):

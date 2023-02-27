@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
-from disease.base.estimators import BaseEstimator
+from distool.base.estimators import BaseEstimator
 
 
 class DiseaseClassifier(BaseEstimator):

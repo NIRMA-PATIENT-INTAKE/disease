@@ -6,9 +6,9 @@ from negspacy.negation import Negex
 from spacy import Language
 from spacy.tokens import Doc
 
-from disease.base.estimators import BaseTransformer
-from disease.feature_extraction.anamnesis import Anamnesis
-from disease.feature_extraction.symptom_collection import (
+from distool.base.estimators import BaseTransformer
+from distool.feature_extraction.anamnesis import Anamnesis
+from distool.feature_extraction.symptom_collection import (
     SYMPTOM_ENTITY_LABEL_VALUE,
     SYMPTOMS_SPACY_MODEL_PATTERNS,
 )
