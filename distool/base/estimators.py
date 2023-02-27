@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from disease.feature_extraction.anamnesis import Anamnesis
+import numpy as np
+
+from distool.feature_extraction.anamnesis import Anamnesis
 
 
 class BaseEstimator(ABC):
@@ -24,10 +26,6 @@ class BaseTransformer(ABC):
 
     @abstractmethod
     def fit(self, x):
-        pass
-
-    @abstractmethod
-    def transform_single(self, message: str) -> Anamnesis:
         pass
 
     @abstractmethod

@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from disease.feature_extraction.symptom import Symptom
+from distool.feature_extraction.symptom import Symptom
 
 """
     Represents all supported symptoms.
