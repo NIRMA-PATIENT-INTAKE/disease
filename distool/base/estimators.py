@@ -29,9 +29,5 @@ class BaseTransformer(ABC):
         pass
 
     @abstractmethod
-    def transform_single(self, message: str) -> Anamnesis:
-        pass
-
-    @abstractmethod
     def transform(self, messages: List[str]) -> List[Anamnesis]:
         pass

@@ -16,6 +16,11 @@ classifier = DiseaseClassifier()
 classifier.fit(features, diseases)
 predicted_diseases = classifier.predict(features)
 print("Predicted diseases:", predicted_diseases)
+# Predicted diseases: ['гастрит' 'отит' '-1']
 
 explainer = SymptomBasedExplainer(symptom_vectorizer, classifier)
+
 print(explainer.explain(features[1]))
+# Наблюдается отит с вероятностью 59%.
+# Это потому что у вас наблюдаются следующие симптомы: температура
+# И отрицаются следующие: недомогание

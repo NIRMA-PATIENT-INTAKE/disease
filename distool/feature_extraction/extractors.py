@@ -1,4 +1,4 @@
-from typing import Iterable, List
+from typing import Iterable, List, Union
 
 import numpy as np
 import spacy
@@ -130,5 +130,12 @@ class SymptomExtractor(BaseTransformer):
 
         return anamnesis
 
-    def transform(self, messages: List[str]) -> List[Anamnesis]:
-        return [self._transform(message) for message in messages]
+    def transform(
+        self, messages: List[str], as_anamnesis: bool = False
+    ) -> Union[List[Anamnesis], np.array]:
+        features = [self._transform(message) for message in messages]
+
+        if not as_anamnesis:
+            features = np.array([anamnesis.get_marks() for anamnesis in features])
+
+        return features
