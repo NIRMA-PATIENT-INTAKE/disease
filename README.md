@@ -12,7 +12,7 @@
 
 ## Установка модуля
 
-    pip install ???
+    pip install distool
 
 ## Разработка
 
