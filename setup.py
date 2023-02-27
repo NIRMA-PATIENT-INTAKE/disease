@@ -1,9 +1,11 @@
 from distutils.core import setup
 
+from setuptools import find_packages
+
 setup(
     name="distool",
-    packages=["distool"],
-    version="0.1",
+    packages=find_packages(),
+    version="0.1.1",
     license="MIT",
     description="Disease processing tool kit",
     author="NIRMA Team of ITMO University",
