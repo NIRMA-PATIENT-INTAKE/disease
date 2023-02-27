@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Union
 
+import numpy as np
 from spacy.tokens import Span
 
-from disease.feature_extraction.symptom import Symptom
-from disease.feature_extraction.symptom_collection import NAME_TO_SYMPTOM, SYMPTOMS
-from disease.feature_extraction.symptom_status import SymptomStatus
+from distool.feature_extraction.symptom import Symptom
+from distool.feature_extraction.symptom_collection import NAME_TO_SYMPTOM, SYMPTOMS
+from distool.feature_extraction.symptom_status import SymptomStatus
 
 
 def _create_symptoms_marks() -> Dict[Symptom, SymptomStatus]:
@@ -67,5 +68,10 @@ class Anamnesis:
     def reset(self):
         self._symptoms_marks: Dict[Symptom, SymptomStatus] = _create_symptoms_marks()
 
-    def get_marks(self) -> List[SymptomStatus]:
-        return list(self._symptoms_marks.values())
+    def get_marks(self, as_number: bool = True) -> Union[List[SymptomStatus], np.array]:
+        marks = list(self._symptoms_marks.values())
+
+        if as_number:
+            marks = np.array([mark.value for mark in marks])
+
+        return marks

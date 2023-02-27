@@ -1,13 +1,14 @@
-from typing import Iterable, List
+from typing import Iterable, List, Union
 
+import numpy as np
 import spacy
 from negspacy.negation import Negex
 from spacy import Language
 from spacy.tokens import Doc
 
-from disease.base.estimators import BaseTransformer
-from disease.feature_extraction.anamnesis import Anamnesis
-from disease.feature_extraction.symptom_collection import (
+from distool.base.estimators import BaseTransformer
+from distool.feature_extraction.anamnesis import Anamnesis
+from distool.feature_extraction.symptom_collection import (
     SYMPTOM_ENTITY_LABEL_VALUE,
     SYMPTOMS_SPACY_MODEL_PATTERNS,
 )
@@ -113,7 +114,7 @@ class SymptomExtractor(BaseTransformer):
     def fit(self, x: Iterable[str]):
         pass
 
-    def transform_single(self, message: str) -> Anamnesis:
+    def _transform(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
         negex_doc: Doc = self._negex_model(model_doc)
 
@@ -129,5 +130,12 @@ class SymptomExtractor(BaseTransformer):
 
         return anamnesis
 
-    def transform(self, messages: List[str]) -> List[Anamnesis]:
-        return [self.transform_single(message) for message in messages]
+    def transform(
+        self, messages: List[str], as_anamnesis: bool = False
+    ) -> Union[List[Anamnesis], np.array]:
+        features = [self._transform(message) for message in messages]
+
+        if not as_anamnesis:
+            features = np.array([anamnesis.get_marks() for anamnesis in features])
+
+        return features
