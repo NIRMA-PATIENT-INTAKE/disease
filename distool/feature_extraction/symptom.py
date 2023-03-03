@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Dict, List, Tuple
 
 from attr import dataclass
 
@@ -14,7 +14,7 @@ class Symptom:
     """
 
     id_name: str
-    patterns: Tuple
+    patterns: List[List[Dict[str, str]]]
 
     def __eq__(self, other):
         return isinstance(other, Symptom) and self.id_name == other.id_name
