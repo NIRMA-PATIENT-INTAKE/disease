@@ -100,7 +100,9 @@ class SymptomExtractor(BaseTransformer):
         self._spacy_lang_model: Language = spacy.load(
             SymptomExtractor.SPACY_LANG_MODEL_NAME
         )
-        ruler = self._spacy_lang_model.add_pipe("entity_ruler")
+        ruler = self._spacy_lang_model.add_pipe(
+            "entity_ruler", config={"validate": True}
+        )
 
         ruler.add_patterns(SYMPTOMS_SPACY_MODEL_PATTERNS)
         self._negex_model: Negex = Negex(
