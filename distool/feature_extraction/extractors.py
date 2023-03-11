@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from typing import Iterable, List, Union
 
 import numpy as np
@@ -133,7 +134,8 @@ class SymptomExtractor(BaseTransformer):
     def transform(
         self, messages: List[str], as_anamnesis: bool = False
     ) -> Union[List[Anamnesis], np.array]:
-        features = [self._transform(message) for message in messages]
+        with ThreadPoolExecutor() as executor:
+            features = list(executor.map(self._transform, messages))
 
         if not as_anamnesis:
             features = np.array([anamnesis.get_marks() for anamnesis in features])
