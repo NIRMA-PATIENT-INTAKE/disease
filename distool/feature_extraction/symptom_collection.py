@@ -46,7 +46,7 @@ def _create_spacy_model_patterns() -> List[Dict]:
             pattern_record = {
                 SYMPTOM_ENTITY_LABEL_ID: SYMPTOM_ENTITY_LABEL_VALUE,
                 SYMPTOM_ENTITY_PATTERN_ID: pattern,
-                SYMPTOM_ENTITY_ID: SYMPTOM_ENTITY_LABEL_VALUE,
+                SYMPTOM_ENTITY_ID: symptom.id_name,
             }
             result_patterns.append(pattern_record)
 
