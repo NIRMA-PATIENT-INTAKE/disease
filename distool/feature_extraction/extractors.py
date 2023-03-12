@@ -9,10 +9,7 @@ from spacy.tokens import Doc
 
 from distool.base.estimators import BaseTransformer
 from distool.feature_extraction.anamnesis import Anamnesis
-from distool.feature_extraction.symptom_collection import (
-    SYMPTOM_ENTITY_LABEL_VALUE,
-    SYMPTOMS_SPACY_MODEL_PATTERNS,
-)
+from distool.feature_extraction.symptom_collection import SymptomCollection
 
 
 class SymptomExtractor(BaseTransformer):
@@ -104,12 +101,12 @@ class SymptomExtractor(BaseTransformer):
             "entity_ruler", config={"validate": True}
         )
 
-        ruler.add_patterns(SYMPTOMS_SPACY_MODEL_PATTERNS)
+        ruler.add_patterns(SymptomCollection.get_spacy_model_patterns())
         self._negex_model: Negex = Negex(
             nlp=self._spacy_lang_model,
             name="negotiation",
             neg_termset=SymptomExtractor.russian_termset,
-            ent_types=[SYMPTOM_ENTITY_LABEL_VALUE],
+            ent_types=[SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE],
             extension_name=SymptomExtractor.NEGEX_EXTENSION_NAME,
             chunk_prefix=[],
         )
@@ -125,7 +122,7 @@ class SymptomExtractor(BaseTransformer):
         symptom_entities = [
             entity
             for entity in negex_doc.ents
-            if entity.label_ == SYMPTOM_ENTITY_LABEL_VALUE
+            if entity.label_ == SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE
         ]
 
         for entity in symptom_entities:
