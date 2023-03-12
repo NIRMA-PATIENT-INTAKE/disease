@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 from distool.feature_extraction import SymptomExtractor
-from distool.feature_extraction.symptom_collection import SYMPTOMS
+from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
 from distool.models.classifiers import DiseaseClassifier
 
@@ -26,7 +26,7 @@ class SymptomBasedExplainer(BaseExplainer):
         self._classifier = classifier
 
     def explain(self, feature: np.array) -> str:
-        symptom_analysis = list(zip(SYMPTOMS, feature))
+        symptom_analysis = list(zip(SymptomCollection.get_symptoms(), feature))
         predict_proba = self._classifier.predict_proba([feature])[0]
 
         disease_proba = predict_proba[np.argmax(predict_proba)]

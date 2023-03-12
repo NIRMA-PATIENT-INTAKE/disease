@@ -6,12 +6,12 @@ import numpy as np
 from spacy.tokens import Span
 
 from distool.feature_extraction.symptom import Symptom
-from distool.feature_extraction.symptom_collection import NAME_TO_SYMPTOM, SYMPTOMS
+from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
 
 
 def _create_symptoms_marks() -> Dict[Symptom, SymptomStatus]:
-    return dict.fromkeys(SYMPTOMS, SymptomStatus.NO_INFO)
+    return dict.fromkeys(SymptomCollection.get_symptoms(), SymptomStatus.NO_INFO)
 
 
 class Anamnesis:
@@ -24,7 +24,7 @@ class Anamnesis:
 
     def update_symptom_status_by_entity(self, entity: Span):
         entity_lemma = entity.lemma_
-        symptom = NAME_TO_SYMPTOM.get(entity_lemma)
+        symptom = SymptomCollection.get_name_to_symptom_dict().get(entity_lemma)
         if symptom:
             old_value = self._symptoms_marks[symptom]
             if (old_value == SymptomStatus.YES and not entity._.negex) or (
@@ -56,7 +56,7 @@ class Anamnesis:
         return self
 
     def get_symptom_status(self, symptom_name: str) -> SymptomStatus:
-        symptom = NAME_TO_SYMPTOM.get(symptom_name)
+        symptom = SymptomCollection.get_name_to_symptom_dict().get(symptom_name)
         return self._symptoms_marks.get(symptom)
 
     def get_symptoms_status(self) -> List[SymptomStatus]:
