@@ -15,18 +15,18 @@ SYMPTOM_LEMMA_PATTERN_KEY = "LEMMA"
 
 
 def main():
-    symptoms_list: List[List[str]] = load_and_preprocess_symptoms_list()
+    symptoms_list: List[List[str]] = load_and_preprocess_new_symptoms_list()
     symptoms_rules: Dict = {}
-    symptoms_rules: Dict = generate_patterns_from_symptoms_list(
+    symptoms_rules: Dict = add_patterns_from_symptoms_list(
         symptoms_rules, symptoms_list
     )
-    prepared_symptoms_rules: Dict[str, List[Dict]] = prepare_symptom_rules_to_json(
+    prepared_symptoms_rules: Dict[str, List[Dict]] = transform_symptom_rules_for_json(
         symptoms_rules
     )
     save_symptoms_rules_to_json(prepared_symptoms_rules)
 
 
-def load_and_preprocess_symptoms_list() -> List[List[str]]:
+def load_and_preprocess_new_symptoms_list() -> List[List[str]]:
     df = pd.read_csv(PATH_TO_SYMPTOM_DATASET)
     df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     df["Симптомы"].replace("", np.NaN, inplace=True)
@@ -36,7 +36,7 @@ def load_and_preprocess_symptoms_list() -> List[List[str]]:
     return list(df["Симптомы"])
 
 
-def generate_patterns_from_symptoms_list(
+def add_patterns_from_symptoms_list(
     symptoms_rules: Dict[str, Dict], symptoms_list: List[List[str]]
 ) -> Dict[str, Dict]:
     spacy_model: Language = spacy.load(SymptomExtractor.SPACY_LANG_MODEL_NAME)
@@ -44,8 +44,8 @@ def generate_patterns_from_symptoms_list(
     for symptoms_item in symptoms_list:
         for symptom in symptoms_item:
             preprocessed_symptom: str = symptom.strip()
-            symptoms_doc: Doc = spacy_model(preprocessed_symptom)
-            symptom_lemmas: List[str] = [token.lemma_ for token in symptoms_doc]
+            symptom_doc: Doc = spacy_model(preprocessed_symptom)
+            symptom_lemmas: List[str] = [token.lemma_ for token in symptom_doc]
             symptom_name_id: str = " ".join(symptom_lemmas)
 
             if symptom_name_id in symptoms_rules:
@@ -57,10 +57,10 @@ def generate_patterns_from_symptoms_list(
                 }
 
             new_symptom_pattern: List[Tuple[str, str]] = []
-            for token in symptoms_doc:
+            for symptom_token in symptom_doc:
                 symptom_pattern_part: Tuple[str, str] = (
                     SYMPTOM_LEMMA_PATTERN_KEY,
-                    token.lemma_,
+                    symptom_token.lemma_,
                 )
                 new_symptom_pattern.append(symptom_pattern_part)
 
@@ -72,7 +72,7 @@ def generate_patterns_from_symptoms_list(
     return symptoms_rules
 
 
-def prepare_symptom_rules_to_json(
+def transform_symptom_rules_for_json(
     symptoms_rules: Dict[str, Dict]
 ) -> Dict[str, List[Dict]]:
     for symptom_name_id, symptom_rule in symptoms_rules.items():
@@ -85,7 +85,7 @@ def prepare_symptom_rules_to_json(
             new_patterns.append(new_pattern)
         symptom_rule[SymptomCollection.SYMPTOM_PATTERNS_KEY] = new_patterns
 
-    symptoms_rules_for_json = {
+    symptoms_rules_for_json: Dict[str, List[Dict]] = {
         SymptomCollection.SYMPTOMS_FILE_TOP_KEY: list(symptoms_rules.values())
     }
     return symptoms_rules_for_json
