@@ -32,7 +32,7 @@ def load_and_preprocess_new_symptoms_list() -> List[List[str]]:
     df["Симптомы"].replace("", np.NaN, inplace=True)
     df.dropna(inplace=True)
 
-    df["Симптомы"] = df["Симптомы"].map(lambda x: x.split("; "))
+    df["Симптомы"] = df["Симптомы"].map(lambda x: x.split(";"))
     return list(df["Симптомы"])
 
 
