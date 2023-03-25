@@ -5,7 +5,7 @@ from setuptools import find_packages
 setup(
     name="distool",
     packages=find_packages(),
-    version="0.1.1",
+    version="0.1.5",
     license="MIT",
     description="Disease processing tool kit",
     author="NIRMA Team of ITMO University",

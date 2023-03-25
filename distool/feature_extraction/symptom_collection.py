@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 from typing import Dict, List
 
 from distool.feature_extraction.symptom import Symptom
@@ -9,6 +10,8 @@ from distool.feature_extraction.symptom import Symptom
 
 """
 
+BASE_DIR = Path(__file__).parent.parent
+
 
 class SymptomCollection:
     SYMPTOM_ENTITY_LABEL_ID: str = "label"
@@ -16,9 +19,7 @@ class SymptomCollection:
     SYMPTOM_ENTITY_PATTERN_ID: str = "pattern"
     SYMPTOM_ENTITY_ID: str = "id"
 
-    SYMPTOMS_FILE_PATH: str = os.path.join(
-        os.path.dirname(__file__), "../data/symptoms.json"
-    )
+    SYMPTOMS_FILE_PATH: str = BASE_DIR / "data/symptoms.json"
     SYMPTOMS_FILE_TOP_KEY: str = "symptoms"
     SYMPTOM_ID_NAME_KEY: str = "id_name"
     SYMPTOM_PATTERNS_KEY: str = "patterns"
