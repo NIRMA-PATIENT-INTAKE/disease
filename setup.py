@@ -5,7 +5,9 @@ from setuptools import find_packages
 setup(
     name="distool",
     packages=find_packages(),
-    version="0.1.5",
+    package_data={"distool": ["data/symptoms.json"]},
+    include_package_data=True,
+    version="0.1.5.1",
     license="MIT",
     description="Disease processing tool kit",
     author="NIRMA Team of ITMO University",
