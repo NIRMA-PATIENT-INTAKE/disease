@@ -95,20 +95,23 @@ class SymptomExtractor(BaseTransformer):
 
     def __init__(self) -> None:
         self._spacy_lang_model: Language = spacy.load(
-            SymptomExtractor.SPACY_LANG_MODEL_NAME
+            SymptomExtractor.SPACY_LANG_MODEL_NAME,
+            disable=["tok2vec", "morphologizer", "attribute_ruler", "ner"],
         )
+
         ruler = self._spacy_lang_model.add_pipe(
             "entity_ruler", config={"validate": True}
         )
-
         ruler.add_patterns(SymptomCollection.get_spacy_model_patterns())
-        self._negex_model: Negex = Negex(
-            nlp=self._spacy_lang_model,
-            name="negotiation",
-            neg_termset=SymptomExtractor.russian_termset,
-            ent_types=[SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE],
-            extension_name=SymptomExtractor.NEGEX_EXTENSION_NAME,
-            chunk_prefix=[],
+
+        negex_config = {
+            "neg_termset": SymptomExtractor.russian_termset,
+            "ent_types": [SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE],
+            "extension_name": SymptomExtractor.NEGEX_EXTENSION_NAME,
+            "chunk_prefix": [],
+        }
+        self._spacy_lang_model.add_pipe(
+            factory_name="negex", name="negex", last=True, config=negex_config
         )
 
     def fit(self, x: Iterable[str]):
@@ -116,12 +119,13 @@ class SymptomExtractor(BaseTransformer):
 
     def _transform(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
-        negex_doc: Doc = self._negex_model(model_doc)
+        return SymptomExtractor._transform_inner(model_doc)
 
+    def _transform_inner(doc: Doc) -> Anamnesis:
         anamnesis: Anamnesis = Anamnesis()
         symptom_entities = [
             entity
-            for entity in negex_doc.ents
+            for entity in doc.ents
             if entity.label_ == SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE
         ]
 
@@ -133,8 +137,9 @@ class SymptomExtractor(BaseTransformer):
     def transform(
         self, messages: List[str], as_anamnesis: bool = False
     ) -> Union[List[Anamnesis], np.array]:
+        model_docs: List[Doc] = self._spacy_lang_model.pipe(messages)
         with ThreadPoolExecutor() as executor:
-            features = list(executor.map(self._transform, messages))
+            features = list(executor.map(SymptomExtractor._transform_inner, model_docs))
 
         if not as_anamnesis:
             features = np.array([anamnesis.get_marks() for anamnesis in features])
