@@ -4,6 +4,7 @@ from typing import List, Set, Tuple
 
 import pandas as pd
 import pymorphy2
+from pandas import DataFrame
 
 from distool.feature_extraction import SymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
@@ -18,7 +19,9 @@ PATH_TO_SHOWCASE_DF = BASE_DIR / "data/showcase.csv"
 morph = pymorphy2.MorphAnalyzer()
 
 
-def main():
+def create_extractor_showcase(
+    extractor: SymptomExtractor, should_save_showcase: bool
+) -> DataFrame:
     marked_df = load_marked_df()
     marked_symptoms = get_marked_symptoms(marked_df)
     marked_symptom_ids = get_marked_symptom_ids(marked_symptoms)
@@ -38,7 +41,6 @@ def main():
     )
     df_showcase.loc[:, marked_symptom_column_labels] = column_symptoms_marks
 
-    extractor = SymptomExtractor()
     transformed_symptoms = extractor.transform(df_showcase.case)
     extractor_symptom_column_labels = get_extractor_symptom_column_labels(
         existed_symptoms_id
@@ -47,7 +49,10 @@ def main():
 
     print(df_showcase.sum())
     print(df_showcase.shape)
-    df_showcase.to_csv(PATH_TO_SHOWCASE_DF, index=False)
+    if should_save_showcase:
+        df_showcase.to_csv(PATH_TO_SHOWCASE_DF, index=False)
+
+    return df_showcase
 
 
 def load_marked_df() -> pd.DataFrame:
@@ -179,4 +184,5 @@ def symptom_id_to_extractor_column_name(id):
 
 
 if __name__ == "__main__":
-    main()
+    extractor = SymptomExtractor()
+    create_extractor_showcase(extractor, True)
