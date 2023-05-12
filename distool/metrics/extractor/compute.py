@@ -49,9 +49,9 @@ def validate_extractor(
 
 
 def get_label_partion(df_in_symptoms: pd.DataFrame, label: str) -> float:
-    label_columns = list(set(RESULT_LABELS.values()).difference(["UNDEFINED"]))
+    label_columns = list(set(RESULT_LABELS.keys()).difference(["UNDEFINED"]))
 
-    return df_in_symptoms[label].sum() / df_in_symptoms[label_columns].sum()
+    return df_in_symptoms[label].sum() / df_in_symptoms[label_columns].sum().sum()
 
 
 def compute_metrics(df_showcase: pd.DataFrame, print_metrics: bool = True) -> None:
@@ -68,7 +68,7 @@ def compute_metrics(df_showcase: pd.DataFrame, print_metrics: bool = True) -> No
 
     symptom_labels_df = pd.DataFrame(symptom2labels, index=list(RESULT_LABELS.keys())).T
     in_symptoms_df = symptom_labels_df[
-        symptom_labels_df.undefined != symptom_labels_df.shape[0]
+        symptom_labels_df["UNDEFINED"] != symptom_labels_df.shape[0]
     ].sort_values("INVALID")
 
     if print_metrics:
