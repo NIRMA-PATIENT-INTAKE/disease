@@ -76,3 +76,8 @@ def compute_metrics(df_showcase: pd.DataFrame, print_metrics: bool = True) -> No
             print(label, "-", round(get_label_partion(in_symptoms_df, label), 2))
 
     return in_symptoms_df
+
+
+if __name__ == "__main__":
+    df_showcase = pd.read_csv("../../data/showcase.csv")
+    compute_metrics(df_showcase)

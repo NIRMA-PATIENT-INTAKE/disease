@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 from spacy.tokens import Span
@@ -75,3 +75,11 @@ class Anamnesis:
             marks = np.array([mark.value for mark in marks])
 
         return marks
+
+    def get_marks_with_symptom_ids(
+        self, as_number: bool = True
+    ) -> List[Tuple[str, Union[SymptomStatus, int]]]:
+        marks = self.get_marks(as_number)
+        symptom_ids = map(lambda x: x.id_name, list(self._symptoms_marks.keys()))
+
+        return list(zip(symptom_ids, marks))
