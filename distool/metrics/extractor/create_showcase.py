@@ -7,14 +7,15 @@ import pymorphy2
 from pandas import DataFrame
 
 from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction.anamnesis import Anamnesis
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
 
 BASE_DIR = Path(__file__).parent.parent
 
-PATH_TO_MARKED_DF = BASE_DIR / "data/patients_symptoms_marked.csv"
-PATH_TO_PATIENT_CASE_DF = BASE_DIR / "data/patient_case.csv"
-PATH_TO_SHOWCASE_DF = BASE_DIR / "data/showcase.csv"
+PATH_TO_MARKED_DF = BASE_DIR / "../data/patients_symptoms_marked.csv"
+PATH_TO_PATIENT_CASE_DF = BASE_DIR / "../data/patient_case.csv"
+PATH_TO_SHOWCASE_DF = BASE_DIR / "../data/showcase.csv"
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -41,7 +42,16 @@ def create_extractor_showcase(
     )
     df_showcase.loc[:, marked_symptom_column_labels] = column_symptoms_marks
 
-    transformed_symptoms = extractor.transform(df_showcase.case)
+    transformed_symptoms = []
+    for case in df_showcase.case:
+        anamnesis = Anamnesis()
+        anamnesis_list = extractor.transform(case, True)
+        for new_anamnesis in anamnesis_list:
+            anamnesis = anamnesis.update_symptoms_statuses_by_new_anamnesis(
+                new_anamnesis
+            )
+        transformed_symptoms.append(anamnesis.get_marks(True))
+
     extractor_symptom_column_labels = get_extractor_symptom_column_labels(
         existed_symptoms_id
     )
@@ -116,10 +126,14 @@ def add_case_text_column_to_showcase(df_showcase: pd.DataFrame) -> pd.DataFrame:
 def preprocess_case(df):
     df.case = df.case.str.lower()
     df.case = df.case.apply(lambda x: re.sub(r"(\<(/?[^>]+)>)", " ", x).strip())
-    df.case = df.case.str.replace("[^\w\s]", " ")
+    df.case = df.case.str.replace("[^\w\s.!?]", " ")
+    df.case = df.case.str.replace("[.!?]", ".")
+    df.case = df.case.str.replace("\s*\.\s*", ".")
     df.case = df.case.apply(lambda x: re.sub(r"\d+", " ", x))
-    df.case = df.case.apply(lambda x: lemmatize(x))
-    df.case = df.case.apply(lambda x: " ".join(x))
+    df.case = df.case.str.replace("\s+", " ")
+    df.case = df.case.apply(lambda x: x.split("."))
+    df.case = df.case.apply(lambda x: [lemmatize(i) for i in x])
+    df.case = df.case.apply(lambda x: [" ".join(i) for i in x])
 
 
 def get_marked_symptom_column_labels(existed_symptoms_id: List[str]) -> List[str]:
