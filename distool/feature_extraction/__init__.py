@@ -1,3 +1,4 @@
-from distool.feature_extraction.extractors import SymptomExtractor
+from distool.feature_extraction.dumb_extractor import DumbSymptomExtractor
+from distool.feature_extraction.smart_extractor import SmartSymptomExtractor
 
-__all__ = [SymptomExtractor]
+__all__ = [SmartSymptomExtractor, DumbSymptomExtractor]

@@ -7,7 +7,7 @@ import spacy
 from spacy import Language
 from spacy.tokens import Doc
 
-from distool import SymptomExtractor
+from distool.feature_extraction import SmartSymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
 
 PATH_TO_SYMPTOM_DATASET = "../data/symptoms_datasets/symptoms_dataset.csv"
@@ -176,7 +176,7 @@ def missed_symptoms_from_showcase() -> List[str]:
 def add_patterns_from_symptoms_list(
     symptoms_rules: Dict[str, Dict], symptoms_list: List[List[str]]
 ) -> Dict[str, Dict]:
-    spacy_model: Language = spacy.load(SymptomExtractor.SPACY_LANG_MODEL_NAME)
+    spacy_model: Language = spacy.load(SmartSymptomExtractor.SPACY_LANG_MODEL_NAME)
 
     for symptoms_item in symptoms_list:
         for symptom in symptoms_item:

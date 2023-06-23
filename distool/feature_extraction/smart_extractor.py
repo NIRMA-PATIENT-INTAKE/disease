@@ -12,7 +12,7 @@ from distool.feature_extraction.anamnesis import Anamnesis
 from distool.feature_extraction.symptom_collection import SymptomCollection
 
 
-class SymptomExtractor(BaseTransformer):
+class SmartSymptomExtractor(BaseTransformer):
     """Symptom based text vectorization"""
 
     SPACY_LANG_MODEL_NAME: str = "ru_core_news_md"
@@ -95,7 +95,7 @@ class SymptomExtractor(BaseTransformer):
 
     def __init__(self) -> None:
         self._spacy_lang_model: Language = spacy.load(
-            SymptomExtractor.SPACY_LANG_MODEL_NAME,
+            SmartSymptomExtractor.SPACY_LANG_MODEL_NAME,
             disable=["tok2vec", "morphologizer", "attribute_ruler", "ner"],
         )
 
@@ -105,9 +105,9 @@ class SymptomExtractor(BaseTransformer):
         ruler.add_patterns(SymptomCollection.get_spacy_model_patterns())
 
         negex_config = {
-            "neg_termset": SymptomExtractor.russian_termset,
+            "neg_termset": SmartSymptomExtractor.russian_termset,
             "ent_types": [SymptomCollection.SYMPTOM_ENTITY_LABEL_VALUE],
-            "extension_name": SymptomExtractor.NEGEX_EXTENSION_NAME,
+            "extension_name": SmartSymptomExtractor.NEGEX_EXTENSION_NAME,
             "chunk_prefix": [],
         }
         self._spacy_lang_model.add_pipe(
@@ -119,7 +119,7 @@ class SymptomExtractor(BaseTransformer):
 
     def _transform(self, message: str) -> Anamnesis:
         model_doc: Doc = self._spacy_lang_model(message)
-        return SymptomExtractor._transform_inner(model_doc)
+        return SmartSymptomExtractor._transform_inner(model_doc)
 
     def _transform_inner(doc: Doc) -> Anamnesis:
         anamnesis: Anamnesis = Anamnesis()
@@ -139,7 +139,9 @@ class SymptomExtractor(BaseTransformer):
     ) -> Union[List[Anamnesis], np.array]:
         model_docs: List[Doc] = self._spacy_lang_model.pipe(messages)
         with ThreadPoolExecutor() as executor:
-            features = list(executor.map(SymptomExtractor._transform_inner, model_docs))
+            features = list(
+                executor.map(SmartSymptomExtractor._transform_inner, model_docs)
+            )
 
         if not as_anamnesis:
             features = np.array([anamnesis.get_marks() for anamnesis in features])
