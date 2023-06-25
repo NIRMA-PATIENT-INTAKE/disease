@@ -5,7 +5,7 @@ import numpy as np
 from distool.feature_extraction import SmartSymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
-from distool.estimators.classifiers import DiseaseClassifier
+from distool.estimators.classifiers import BaseDiseaseClassifier, FedotDiseaseClassifier
 
 
 class BaseExplainer(ABC):
@@ -45,3 +45,23 @@ class SymptomBasedExplainer(BaseExplainer):
             f"И отрицаются следующие: "
             f"{''.join(no_symptoms)}"
         )
+
+
+class FedotBasedExplainer(BaseExplainer):
+    def __init__(
+        self, vectorizer: SymptomExtractor, classifier: FedotDiseaseClassifier
+    ) -> None:
+        """Symptom Based Explainer
+        :param vectorizer: fitted symptom extractor
+        :param classifier: fitted classifier on fedot framework
+        """
+        assert isinstance(
+            classifier, FedotDiseaseClassifier
+        ), "Classifier should be FEDOT classifier"
+
+        self._vectorizer = vectorizer
+        self._classifier = classifier
+
+    def explain(self, feature: np.array) -> str:
+        explainer = self._classifier.model.explain([feature], visualization=True)
+        return explainer
