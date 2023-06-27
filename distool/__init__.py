@@ -1,3 +1,3 @@
 from distool.feature_extraction.extractors import SymptomExtractor
 from distool.interpretation.explainer import SymptomBasedExplainer
-from distool.models.classifiers import DiseaseClassifier
+from distool.estimators.classifiers import DiseaseClassifier

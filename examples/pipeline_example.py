@@ -1,6 +1,6 @@
 from distool.feature_extraction import SymptomExtractor
 from distool.interpretation.explainer import SymptomBasedExplainer
-from distool.models import DiseaseClassifier
+from distool.estimators import DiseaseClassifier
 
 texts = [
     "У меня болит живот, но нет температуры",
