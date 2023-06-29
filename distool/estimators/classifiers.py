@@ -7,9 +7,13 @@ from distool.base.estimators import BaseEstimator
 
 class BaseDiseaseClassifier(BaseEstimator):
     threshold: float = 0.5
+    id2class: dict = {}
 
     def predict(self, x):
-        return self.predict_proba(x) > self.threshold
+        logits = self.predict_proba(x)
+        class_ids = np.argmax(logits, axis=1)
+        classes = np.array([self.id2class[class_id] for class_id in class_ids])
+        return classes
 
 
 class DiseaseClassifier(BaseDiseaseClassifier):
@@ -20,6 +24,8 @@ class DiseaseClassifier(BaseDiseaseClassifier):
 
     def fit(self, features: np.array, y: np.array) -> "BaseDiseaseClassifier":
         self.log_reg.fit(features, y)
+        self.id2class = {i: c for i, c in enumerate(self.log_reg.classes_)}
+
         return self
 
     def predict_proba(self, features: np.array) -> np.array:
@@ -27,8 +33,14 @@ class DiseaseClassifier(BaseDiseaseClassifier):
 
 
 class FedotDiseaseClassifier(BaseDiseaseClassifier):
-    def __init__(self):
-        self.model = Fedot(problem="classification", timeout=5, preset="best_quality")
+    def __init__(self, **options) -> None:
+        self.model = Fedot(
+            **options,
+            problem="classification",
+            timeout=5,
+            preset="best_quality",
+            safe_mode=True,
+        )
 
     def fit(self, features: np.array, y: np.array) -> "FedotDiseaseClassifier":
         if not hasattr(features, "shape"):
@@ -37,7 +49,9 @@ class FedotDiseaseClassifier(BaseDiseaseClassifier):
         if not hasattr(y, "shape"):
             y = np.array(y)
 
-        self.model.fit(features, y)
+        self.id2class = {i: c for i, c in enumerate(np.unique(y))}
+        self.model.fit(features=features, target=y)
+
         return self
 
     def predict_proba(self, x: np.array) -> np.array:

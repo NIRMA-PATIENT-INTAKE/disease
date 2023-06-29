@@ -63,5 +63,7 @@ class FedotBasedExplainer(BaseExplainer):
         self._classifier = classifier
 
     def explain(self, feature: np.array) -> str:
-        explainer = self._classifier.model.explain([feature], visualization=True)
+        explainer = self._classifier.model.explain(
+            features=feature[np.newaxis, :], visualization=True
+        )
         return explainer

@@ -2,9 +2,8 @@ from distool.estimators import DiseaseClassifier
 from distool.feature_extraction import SmartSymptomExtractor
 
 
-def test_classifier():
-    texts = ["У меня температура, но нет недомогания", "У меня температура"]
-    diseases = ["a", "b"]
+def test_classifier(simple_data):
+    texts, diseases = simple_data
 
     symptom_vectorizer = SmartSymptomExtractor()
     features = symptom_vectorizer.transform(texts)
