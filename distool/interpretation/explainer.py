@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
+from distool.estimators.classifiers import DiseaseClassifier, FedotDiseaseClassifier
 from distool.feature_extraction import SmartSymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
-from distool.estimators.classifiers import BaseDiseaseClassifier, FedotDiseaseClassifier
 
 
 class BaseExplainer(ABC):
@@ -49,7 +49,7 @@ class SymptomBasedExplainer(BaseExplainer):
 
 class FedotBasedExplainer(BaseExplainer):
     def __init__(
-        self, vectorizer: SymptomExtractor, classifier: FedotDiseaseClassifier
+        self, vectorizer: SmartSymptomExtractor, classifier: FedotDiseaseClassifier
     ) -> None:
         """Symptom Based Explainer
         :param vectorizer: fitted symptom extractor
