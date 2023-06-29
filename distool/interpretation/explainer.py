@@ -5,7 +5,7 @@ import numpy as np
 from distool.feature_extraction import SmartSymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
-from distool.models.classifiers import DiseaseClassifier
+from distool.estimators.classifiers import DiseaseClassifier
 
 
 class BaseExplainer(ABC):
