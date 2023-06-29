@@ -12,7 +12,7 @@ class BaseDiseaseClassifier(BaseEstimator):
         return self.predict_proba(x) > self.threshold
 
 
-class BaseDiseaseClassifier(BaseDiseaseClassifier):
+class DiseaseClassifier(BaseDiseaseClassifier):
     """Disease Classifier"""
 
     def __init__(self):

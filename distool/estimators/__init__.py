@@ -1,3 +1,3 @@
-from distool.estimators.classifiers import DiseaseClassifier
+from distool.estimators.classifiers import DiseaseClassifier, FedotDiseaseClassifier
 
-__all__ = [DiseaseClassifier]
+__all__ = [DiseaseClassifier, FedotDiseaseClassifier]

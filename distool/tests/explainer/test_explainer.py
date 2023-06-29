@@ -1,6 +1,6 @@
+from distool.estimators import DiseaseClassifier, FedotDiseaseClassifier
 from distool.feature_extraction import SmartSymptomExtractor
 from distool.interpretation.explainer import SymptomBasedExplainer
-from distool.estimators import DiseaseClassifier, FedotDiseaseClassifier
 
 
 def test_explainer_output():
@@ -10,7 +10,7 @@ def test_explainer_output():
     symptom_vectorizer = SmartSymptomExtractor()
     features = symptom_vectorizer.transform(texts)
 
-    classifier = BaseDiseaseClassifier()
+    classifier = DiseaseClassifier()
     classifier.fit(features, diseases)
 
     explainer = SymptomBasedExplainer(symptom_vectorizer, classifier)
@@ -25,7 +25,7 @@ def test_fedot_explainer():
     texts = ["У меня температура, но нет недомогания", "У меня температура"]
     diseases = ["a", "b"]
 
-    symptom_vectorizer = SymptomExtractor()
+    symptom_vectorizer = SmartSymptomExtractor()
     features = symptom_vectorizer.transform(texts)
 
     classifier = FedotDiseaseClassifier()
