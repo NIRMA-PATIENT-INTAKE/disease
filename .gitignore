@@ -164,3 +164,7 @@ cython_debug/
 
 # MacOS
 .DS_Store
+
+
+# package
+distool/**./**.ipynb
