@@ -19,3 +19,20 @@ class DiseaseClassifier(BaseEstimator):
 
     def predict(self, x):
         return self.log_reg.predict(x)
+
+
+class UrgencyClassifier(BaseEstimator):
+    """Urgency Classifier"""
+
+    def __init__(self):
+        self.log_reg = LogisticRegression()
+
+    def fit(self, features: np.array, y: np.array) -> "UrgencyClassifier":
+        self.log_reg.fit(features, y)
+        return self
+
+    def predict_proba(self, features: np.array) -> np.array:
+        return self.log_reg.predict_proba(features)
+
+    def predict(self, x):
+        return self.log_reg.predict(x)
