@@ -1,5 +1,5 @@
-from distool.feature_extraction import SymptomExtractor
 from distool.estimators import DiseaseClassifier
+from distool.feature_extraction import SmartSymptomExtractor
 
 
 def test_classifier():
