@@ -1,12 +1,13 @@
 import re
 from pathlib import Path
-from typing import List, Set, Tuple
+from typing import List, Optional, Set, Tuple
 
 import pandas as pd
 import pymorphy2
 from pandas import DataFrame
 
-from distool.feature_extraction import SymptomExtractor
+from distool.base.estimators import BaseTransformer
+from distool.feature_extraction import DumbSymptomExtractor, SmartSymptomExtractor
 from distool.feature_extraction.anamnesis import Anamnesis
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
@@ -15,13 +16,14 @@ BASE_DIR = Path(__file__).parent.parent
 
 PATH_TO_MARKED_DF = BASE_DIR / "../data/patients_symptoms_marked.csv"
 PATH_TO_PATIENT_CASE_DF = BASE_DIR / "../data/patient_case.csv"
-PATH_TO_SHOWCASE_DF = BASE_DIR / "../data/showcase.csv"
+PATH_TO_SMART_SHOWCASE_DF = BASE_DIR / "../data/smart_showcase.csv"
+PATH_TO_DUMB_SHOWCASE_DF = BASE_DIR / "../data/dumb_showcase.csv"
 
 morph = pymorphy2.MorphAnalyzer()
 
 
 def create_extractor_showcase(
-    extractor: SymptomExtractor, should_save_showcase: bool
+    extractor: BaseTransformer, path_to_save_showcase: Optional[Path]
 ) -> DataFrame:
     marked_df = load_marked_df()
     marked_symptoms = get_marked_symptoms(marked_df)
@@ -59,8 +61,8 @@ def create_extractor_showcase(
 
     print(df_showcase.sum())
     print(df_showcase.shape)
-    if should_save_showcase:
-        df_showcase.to_csv(PATH_TO_SHOWCASE_DF, index=False)
+    if path_to_save_showcase:
+        df_showcase.to_csv(path_to_save_showcase, index=False)
 
     return df_showcase
 
@@ -198,5 +200,5 @@ def symptom_id_to_extractor_column_name(id):
 
 
 if __name__ == "__main__":
-    extractor = SymptomExtractor()
-    create_extractor_showcase(extractor, True)
+    create_extractor_showcase(SmartSymptomExtractor(), PATH_TO_SMART_SHOWCASE_DF)
+    create_extractor_showcase(DumbSymptomExtractor(), PATH_TO_DUMB_SHOWCASE_DF)

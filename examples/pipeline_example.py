@@ -1,4 +1,4 @@
-from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction import SmartSymptomExtractor
 from distool.interpretation.explainer import SymptomBasedExplainer
 from distool.estimators import DiseaseClassifier
 
@@ -9,7 +9,7 @@ texts = [
 ]
 diseases = ["гастрит", "отит", "-1"]
 
-symptom_vectorizer = SymptomExtractor()
+symptom_vectorizer = SmartSymptomExtractor()
 features = symptom_vectorizer.transform(texts)
 
 classifier = DiseaseClassifier()

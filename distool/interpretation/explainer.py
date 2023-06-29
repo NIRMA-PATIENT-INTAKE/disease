@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction import SmartSymptomExtractor
 from distool.feature_extraction.symptom_collection import SymptomCollection
 from distool.feature_extraction.symptom_status import SymptomStatus
 from distool.estimators.classifiers import DiseaseClassifier
@@ -16,7 +16,7 @@ class BaseExplainer(ABC):
 
 class SymptomBasedExplainer(BaseExplainer):
     def __init__(
-        self, vectorizer: SymptomExtractor, classifier: DiseaseClassifier
+        self, vectorizer: SmartSymptomExtractor, classifier: DiseaseClassifier
     ) -> None:
         """Symptom Based Explainer
         :param vectorizer: fitted symptom extractor

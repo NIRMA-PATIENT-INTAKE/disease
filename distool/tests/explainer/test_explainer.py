@@ -1,4 +1,4 @@
-from distool.feature_extraction import SymptomExtractor
+from distool.feature_extraction import SmartSymptomExtractor
 from distool.interpretation.explainer import SymptomBasedExplainer
 from distool.estimators import DiseaseClassifier
 
@@ -7,7 +7,7 @@ def test_explainer_output():
     texts = ["У меня температура, но нет недомогания", "У меня температура"]
     diseases = ["a", "b"]
 
-    symptom_vectorizer = SymptomExtractor()
+    symptom_vectorizer = SmartSymptomExtractor()
     features = symptom_vectorizer.transform(texts)
 
     classifier = DiseaseClassifier()

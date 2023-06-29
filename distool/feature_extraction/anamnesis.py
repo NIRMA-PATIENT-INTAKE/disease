@@ -36,6 +36,10 @@ class Anamnesis:
             elif old_value == SymptomStatus.NO_INFO and entity._.negex:
                 self._symptoms_marks[symptom] = SymptomStatus.NO
 
+    def update_symptom_status(self, symptom: Symptom):
+        if symptom in self._symptoms_marks:
+            self._symptoms_marks[symptom] = SymptomStatus.YES
+
     def update_symptoms_statuses_by_new_anamnesis(self, new_anamnesis: Anamnesis):
         if not isinstance(new_anamnesis, Anamnesis):
             raise ValueError(
