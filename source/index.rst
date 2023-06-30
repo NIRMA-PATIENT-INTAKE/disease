@@ -10,8 +10,6 @@ Welcome to distool's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   distool
-
 Indices and tables
 ==================
 

@@ -1,3 +1,3 @@
-from distool.models.classifiers import BaseDiseaseClassifier, FedotDiseaseClassifier
+from distool.estimators.classifiers import BaseDiseaseClassifier, FedotDiseaseClassifier
 
-__all__ = [BaseDiseaseClassifier, FedotDiseaseClassifier]
+__all__ = ["BaseDiseaseClassifier", "FedotDiseaseClassifier"]

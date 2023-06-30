@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-import numpy as np
-
-from distool.feature_extraction.anamnesis import Anamnesis
-
 
 class BaseEstimator(ABC):
     """BaseEstimator"""
@@ -29,5 +25,5 @@ class BaseTransformer(ABC):
         pass
 
     @abstractmethod
-    def transform(self, messages: List[str]) -> List[Anamnesis]:
+    def transform(self, messages: List[str]) -> List["Anamnesis"]:
         pass
