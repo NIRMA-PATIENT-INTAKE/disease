@@ -4,13 +4,14 @@ from setuptools import find_packages
 
 setup(
     name="distool",
+    description="Disease processing tool kit in Russian",
     packages=find_packages(),
     package_data={"distool": ["data/symptoms.json"]},
     include_package_data=True,
-    long_description=open("README.md").read(),
-    version="0.1.6",
+    long_description=open("./README.md").read(),
+    long_description_content_type="text/markdown",
+    version="0.1.8.1",
     license="MIT",
-    description="Disease processing tool kit",
     author="NIRMA Team of ITMO University",
     author_email="egorovmichil9@gmail.com",
     url="https://github.com/nirma-patient-intake/disease/",
