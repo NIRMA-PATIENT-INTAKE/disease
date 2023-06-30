@@ -7,8 +7,15 @@ Welcome to distool's documentation!
 ===================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
+
+   distool/distool.base
+   distool/distool.estimators
+   distool/distool.feature_extraction
+   distool/distool.interpretation
+   distool/distool
+   distool/modules
 
 Indices and tables
 ==================
