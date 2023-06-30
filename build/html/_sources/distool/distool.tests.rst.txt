@@ -1,0 +1,39 @@
+distool.tests package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   distool.tests.estimators
+   distool.tests.explainer
+   distool.tests.extractors
+
+Submodules
+----------
+
+distool.tests.conftest module
+-----------------------------
+
+.. automodule:: distool.tests.conftest
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+distool.tests.test\_base module
+-------------------------------
+
+.. automodule:: distool.tests.test_base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: distool.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,21 @@
+distool.tests.extractors package
+================================
+
+Submodules
+----------
+
+distool.tests.extractors.test\_symptom\_extractor module
+--------------------------------------------------------
+
+.. automodule:: distool.tests.extractors.test_symptom_extractor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: distool.tests.extractors
+   :members:
+   :undoc-members:
+   :show-inheritance:

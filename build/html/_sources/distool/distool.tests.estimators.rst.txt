@@ -1,0 +1,29 @@
+distool.tests.estimators package
+================================
+
+Submodules
+----------
+
+distool.tests.estimators.test\_classifier module
+------------------------------------------------
+
+.. automodule:: distool.tests.estimators.test_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+distool.tests.estimators.test\_fedot\_classifier module
+-------------------------------------------------------
+
+.. automodule:: distool.tests.estimators.test_fedot_classifier
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: distool.tests.estimators
+   :members:
+   :undoc-members:
+   :show-inheritance:

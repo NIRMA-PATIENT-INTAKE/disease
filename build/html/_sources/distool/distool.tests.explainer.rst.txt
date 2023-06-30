@@ -1,0 +1,21 @@
+distool.tests.explainer package
+===============================
+
+Submodules
+----------
+
+distool.tests.explainer.test\_explainer module
+----------------------------------------------
+
+.. automodule:: distool.tests.explainer.test_explainer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: distool.tests.explainer
+   :members:
+   :undoc-members:
+   :show-inheritance:
