@@ -14,6 +14,20 @@ BASE_DIR = Path(__file__).parent.parent
 
 
 class SymptomCollection:
+    """
+    Represents a collection of all supported symptoms.
+
+    Attributes:
+        SYMPTOM_ENTITY_LABEL_ID: The label ID for the symptom entity.
+        SYMPTOM_ENTITY_LABEL_VALUE: The label value for the symptom entity.
+        SYMPTOM_ENTITY_PATTERN_ID: The pattern ID for the symptom entity.
+        SYMPTOM_ENTITY_ID: The ID for the symptom entity.
+        SYMPTOMS_FILE_PATH: The file path for the symptoms file.
+        SYMPTOMS_FILE_TOP_KEY: The top key for the symptoms file.
+        SYMPTOM_ID_NAME_KEY: The ID name key for the symptom.
+        SYMPTOM_PATTERNS_KEY: The patterns key for the symptom.
+    """
+
     SYMPTOM_ENTITY_LABEL_ID: str = "label"
     SYMPTOM_ENTITY_LABEL_VALUE: str = "SYMPTOM"
     SYMPTOM_ENTITY_PATTERN_ID: str = "pattern"
@@ -30,6 +44,11 @@ class SymptomCollection:
 
     @classmethod
     def get_symptoms(cls):
+        """Gets the symptoms.
+
+        Returns:
+            A list of symptoms.
+        """
         if cls._symptoms is None:
             cls._symptoms = cls._build_symptoms_from_file()
 
@@ -37,6 +56,11 @@ class SymptomCollection:
 
     @classmethod
     def _build_symptoms_from_file(cls) -> List[Symptom]:
+        """Gets a dictionary that maps symptom names to symptoms.
+
+        Returns:
+            A dictionary that maps symptom names to symptoms.
+        """
         f = open(cls.SYMPTOMS_FILE_PATH)
         symptom_data = json.load(f)
 
@@ -49,6 +73,11 @@ class SymptomCollection:
 
     @classmethod
     def get_name_to_symptom_dict(cls) -> Dict[str, Symptom]:
+        """Gets the SpaCy model patterns.
+
+        Returns:
+            A list of dictionaries representing the SpaCy model patterns.
+        """
         if cls._name_to_symptom_dict is None:
             cls._name_to_symptom_dict = {
                 symptom.id_name: symptom for symptom in cls.get_symptoms()

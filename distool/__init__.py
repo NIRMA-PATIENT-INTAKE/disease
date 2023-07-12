@@ -1,4 +1,10 @@
-"""A tool kit for russian diseases procession
+"""Welcome to the documentation of distool, a Python package for disease diagnosis and urgency estimation
+based on the symptoms extracted from the text.
+ This package provides a comprehensive set of tools for symptom extraction,
+ disease classification, and result interpretation.
+ The documentation is organized into several sections,
+  each dedicated to a specific part of the package.
+  Explore the sections to understand how to use distool effectively for your disease diagnosis tasks.
 
 .. moduleauthor:: Michil Egorov <egorov_michil@mail.ru>
 """

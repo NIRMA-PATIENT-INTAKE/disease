@@ -20,9 +20,15 @@ class Anamnesis:
     """
 
     def __init__(self) -> None:
+        """Initializes a new instance of the Anamnesis class."""
         self._symptoms_marks: Dict[Symptom, SymptomStatus] = _create_symptoms_marks()
 
     def update_symptom_status_by_entity(self, entity: Span):
+        """Updates the status of a symptom based on a given entity.
+
+        Args:
+            entity: A SpaCy Span object representing a symptom entity.
+        """
         entity_lemma = entity.lemma_
         symptom = SymptomCollection.get_name_to_symptom_dict().get(entity_lemma)
         if symptom:
@@ -37,6 +43,11 @@ class Anamnesis:
                 self._symptoms_marks[symptom] = SymptomStatus.NO
 
     def update_symptom_status(self, symptom: Symptom):
+        """Updates the status of a symptom.
+
+        Args:
+            symptom: A Symptom object.
+        """
         if symptom in self._symptoms_marks:
             self._symptoms_marks[symptom] = SymptomStatus.YES
 

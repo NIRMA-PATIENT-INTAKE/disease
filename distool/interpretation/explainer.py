@@ -15,17 +15,37 @@ class BaseExplainer(ABC):
 
 
 class SymptomBasedExplainer(BaseExplainer):
+    """
+    An explainer based on symptoms.
+
+    This class is a specific implementation of the BaseExplainer.
+
+    Attributes:
+        _vectorizer: The symptom extractor.
+        _classifier: The classifier.
+    """
+
     def __init__(
         self, vectorizer: SmartSymptomExtractor, classifier: DiseaseClassifier
     ) -> None:
-        """Symptom Based Explainer
-        :param vectorizer: fitted symptom extractor
-        :param classifier: fitted classifier
+        """Initializes a new instance of the SymptomBasedExplainer class.
+
+        Args:
+            vectorizer: The symptom extractor.
+            classifier: The classifier.
         """
         self._vectorizer = vectorizer
         self._classifier = classifier
 
     def explain(self, feature: np.array) -> str:
+        """Explains the given feature.
+
+        Args:
+            feature: A numpy array representing the feature to explain.
+
+        Returns:
+            A string representing the explanation.
+        """
         symptom_analysis = list(zip(SymptomCollection.get_symptoms(), feature))
         predict_proba = self._classifier.predict_proba([feature])[0]
 
@@ -48,12 +68,24 @@ class SymptomBasedExplainer(BaseExplainer):
 
 
 class FedotBasedExplainer(BaseExplainer):
+    """
+    An explainer based on the FEDOT framework.
+
+    This class is a specific implementation of the BaseExplainer.
+
+    Attributes:
+        _vectorizer: The symptom extractor.
+        _classifier: The classifier.
+    """
+
     def __init__(
         self, vectorizer: SmartSymptomExtractor, classifier: FedotDiseaseClassifier
     ) -> None:
-        """Symptom Based Explainer
-        :param vectorizer: fitted symptom extractor
-        :param classifier: fitted classifier on fedot framework
+        """Initializes a new instance of the FedotBasedExplainer class.
+
+        Args:
+            vectorizer: The symptom extractor.
+            classifier: The classifier.
         """
         assert isinstance(
             classifier, FedotDiseaseClassifier
@@ -63,6 +95,14 @@ class FedotBasedExplainer(BaseExplainer):
         self._classifier = classifier
 
     def explain(self, feature: np.array) -> str:
+        """Explains the given feature.
+
+        Args:
+            feature: A numpy array representing the feature to explain.
+
+        Returns:
+            A string representing the explanation.
+        """
         explainer = self._classifier.model.explain(
             features=feature[np.newaxis, :], visualization=True
         )

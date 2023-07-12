@@ -1,4 +1,0 @@
-distool
-=======
-
-.. automodule:: distool

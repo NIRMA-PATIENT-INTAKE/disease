@@ -3,7 +3,13 @@ from enum import Enum
 
 class SymptomStatus(Enum):
     """
-    Represents the status of symptom for the user.
+    Represents the status of a symptom for a user.
+
+    Attributes:
+        YES: The symptom is present.
+        NO: The symptom is not present.
+        NO_INFO: There is no information about the symptom.
+        CONFUSED: The information about the symptom is confusing.
     """
 
     # When patient has symptom

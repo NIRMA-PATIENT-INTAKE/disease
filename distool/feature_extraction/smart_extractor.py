@@ -13,7 +13,20 @@ from distool.feature_extraction.symptom_collection import SymptomCollection
 
 
 class SmartSymptomExtractor(BaseTransformer):
-    """Symptom based text vectorization"""
+    """
+    A symptom extractor that uses SpaCy and Negex for symptom recognition and negation handling.
+
+    This class is a specific implementation of the BaseTransformer.
+
+    Attributes:
+        SPACY_LANG_MODEL_NAME: The name of the SpaCy language model to use.
+        NEGEX_EXTENSION_NAME: The name of the Negex extension.
+        pseudo_negations: A list of phrases that are considered pseudo negations.
+        preceding_negations: A list of phrases that are considered preceding negations.
+        following_negations: A list of phrases that are considered following negations.
+        termination: A list of phrases that are considered termination phrases.
+        russian_termset: A dictionary containing the Russian termset for Negex.
+    """
 
     SPACY_LANG_MODEL_NAME: str = "ru_core_news_md"
     NEGEX_EXTENSION_NAME: str = "negex"
@@ -94,6 +107,7 @@ class SmartSymptomExtractor(BaseTransformer):
     }
 
     def __init__(self) -> None:
+        """Initializes a new instance of the SmartSymptomExtractor class."""
         self._spacy_lang_model: Language = spacy.load(
             SmartSymptomExtractor.SPACY_LANG_MODEL_NAME,
             disable=["tok2vec", "morphologizer", "attribute_ruler", "ner"],
@@ -115,9 +129,22 @@ class SmartSymptomExtractor(BaseTransformer):
         )
 
     def fit(self, x: Iterable[str]):
+        """Fits the transformer according to the given training data.
+
+        Args:
+            x: Iterable over raw text data.
+        """
         pass
 
     def _transform(self, message: str) -> Anamnesis:
+        """Transforms a single message into an Anamnesis instance.
+
+        Args:
+            message: A string representing a user message.
+
+        Returns:
+            An Anamnesis instance.
+        """
         model_doc: Doc = self._spacy_lang_model(message)
         return SmartSymptomExtractor._transform_inner(model_doc)
 
@@ -137,6 +164,15 @@ class SmartSymptomExtractor(BaseTransformer):
     def transform(
         self, messages: List[str], as_anamnesis: bool = False
     ) -> Union[List[Anamnesis], np.array]:
+        """Transforms a list of messages into a list of Anamnesis instances or a numpy array.
+
+        Args:
+            messages: A list of strings representing user messages.
+            as_anamnesis: A boolean indicating whether to return the result as a list of Anamnesis instances. If False, the result is returned as a numpy array.
+
+        Returns:
+            A list of Anamnesis instances or a numpy array.
+        """
         model_docs: List[Doc] = self._spacy_lang_model.pipe(messages)
         with ThreadPoolExecutor() as executor:
             features = list(
