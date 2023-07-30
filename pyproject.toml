@@ -4,3 +4,4 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "disease"
+version = "0.1.8.1"
