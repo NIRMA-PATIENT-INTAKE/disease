@@ -35,3 +35,9 @@ def test_dumb_transform_on_simple_message_2():
     message = "У меня нет температуры и нет недомогания."
     anamnesis = DumbSymptomExtractor()._transform(message)
     anamnesis.get_marks(as_number=False)
+
+
+def test_new_symptoms():
+    message = "болит и кружится голова"
+    anamnesis = SmartSymptomExtractor()._transform(message)
+    print(anamnesis._symptoms_marks)

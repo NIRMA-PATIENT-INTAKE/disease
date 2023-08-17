@@ -170,6 +170,11 @@ def missed_symptoms_from_showcase() -> List[str]:
         "кишечный палочка",
         "хеликобактериоз",
         "опухание голеностопный сустав",
+        "болеть голова",
+        "кружиться голова",
+        "тошнить",
+        "болеть горло",
+        "болеть живот",
     ]
 
 
@@ -217,7 +222,7 @@ def add_patterns_from_symptoms_list(
             }
 
         new_symptom_pattern: List[Tuple[str, str]] = []
-        for symptom_token in symptom.strip():
+        for symptom_token in symptom.strip().split():
             symptom_pattern_part: Tuple[str, str] = (
                 SYMPTOM_LEMMA_PATTERN_KEY,
                 symptom_token,
